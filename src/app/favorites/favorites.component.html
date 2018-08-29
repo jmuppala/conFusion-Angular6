@@ -1,0 +1,43 @@
+<div class="container"
+fxLayout="column"
+fxLayoutGap="10px">
+
+<div fxFlex>
+<div fxLayout="row" fxLayoutAlign="none center">
+ <h3 fxFlex="80%">My Favorites</h3>
+ <span class="flex-spacer"></span> 
+ <mat-slide-toggle fxFlex
+ [(ngModel)]="delete"
+ [color]="Warn">
+ Delete!
+ </mat-slide-toggle>
+</div>
+<hr>
+</div>
+
+<div *ngIf="favorites || errMess; else loading">
+<div fxFlex *ngIf="favorites" [@expand]>
+<mat-grid-list cols="2" rowHeight="200px">
+ <mat-grid-tile *ngFor="let dish of favorites.dishes">
+   <div [routerLink]="['/dishdetail', dish._id]" appHighlight>
+   <img height="200px" src="{{baseURL + dish.image}}" alt={{dish.name}}>
+   </div>
+   <mat-grid-tile-footer>
+     <h1 mat-line>{{dish.name | uppercase}}</h1>
+     <span class="flex-spacer"></span>
+     <button mat-icon-button *ngIf="delete" (click)="deleteFavorite(dish._id)">
+       <span style="color: red;" class="fa fa-times fa-lg"></span>
+     </button>
+   </mat-grid-tile-footer>
+ </mat-grid-tile>
+</mat-grid-list>
+</div>
+<div *ngIf="errMess">
+<h2>Error</h2>
+<h4>{{errMess}}</h4>
+</div>
+</div>
+<ng-template #loading>
+  <mat-spinner></mat-spinner><h4>Loading . . . Please Wait</h4>
+</ng-template>
+</div>
